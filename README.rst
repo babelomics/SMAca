@@ -80,13 +80,15 @@ SMA carriers with a single SMN1 copy are expected to have **Pi_b** values under 
 
 The **scale_factor**, that is proportional to the absolute number of SMN1 and SMN2 copies, and **cov_x_p** can be used to estimate the absolute SMN1:SMN2 copy-number as follows:
 
-======== ============ =====================
-genotype scale_factor cov_SMN1_p/cov_SMN2_p
-======== ============ =====================
-1:3      1            1/3          
-1:2      0.75         1/2
-1:1      0.5          1 
-======= ============= =====================
++----------+--------------+-----------------------+
+| genotype | scale_factor | cov_SMN1_p/cov_SMN2_p |
++==========+==============+=======================+
+| 1:3      | 1            | 1/3                   |
++----------+--------------+-----------------------+
+| 1:2      | 0.75         | 1/2                   |
++----------+--------------+-----------------------+
+| 1:1      | 0.5          | 1                     |
++----------+--------------+-----------------------+
 
 In order to detect the so-called *silent carriers* (i.e. individuals with two copies of SMN1 on one chromosome, but none on the other), the consensus sequence at the two locations should also be taken into account. Depending on the number of SMN2 copies, the expected **scale_factor** should be close to 0.75 (2:1) or 0.5 (2:0) and, in both cases, the scaled proportion of SMN1 reads **Pi_p** should be close to 1/2 in each position.
 
