@@ -1,0 +1,3 @@
+graft smaca/data
+global-include README.rst
+global-include LICENSE.txt
