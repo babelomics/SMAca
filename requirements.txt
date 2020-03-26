@@ -1,0 +1,4 @@
+click
+numpy
+pysam
+joblib

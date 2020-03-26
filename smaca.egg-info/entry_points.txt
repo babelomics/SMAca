@@ -1,0 +1,3 @@
+[console_scripts]
+smaca = smaca.cli:main
+
