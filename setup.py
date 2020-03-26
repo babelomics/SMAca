@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 from pathlib import Path
 
 # The directory containing this file
-HERE = pathlib.Path(__file__).parent
+HERE = Path(__file__).parent
 
 # The text of the README file
 README = (HERE / "README.rst").read_text()
