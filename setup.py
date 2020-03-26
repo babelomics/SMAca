@@ -11,7 +11,7 @@ setup(
     name='smaca',
     version='1.0',
     packages=find_packages(),
-    url='git@gitlab.cbra.com:dlopez/SMA_test.git',
+    url='https://github.com/babelomics/SMAca',
     license='GNU General Public License v.3.0',
     author='Daniel López López, Carlos Loucera',
     author_email=
