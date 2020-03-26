@@ -2,3 +2,4 @@ click
 numpy
 pysam
 joblib
+cython
