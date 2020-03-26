@@ -96,7 +96,7 @@ In order to detect the so-called *silent carriers* (i.e. individuals with two co
 
 
 installation
------------
+------------
 
 SMAca is available through PyP:
 
