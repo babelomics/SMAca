@@ -6,7 +6,7 @@ SMAca: SMA Carrier Analysis tool
 * `usage`_
 * `output`_
 * `interpretation`_
-* `instalation`_
+* `installation`_
 * `citation`_
 
 
@@ -15,9 +15,9 @@ summary
 
 Spinal Muscular Atrophy (SMA) is a severe neuromuscular autosomal recessive disorder affecting 1/10,000 live births. Most SMA patients present homozygous deletion of SMN1, while most SMA carriers present only a single SMN1 copy. The sequence similarity between SMN1 and SMN2, and the complexity of the SMN locus, make the estimation of the SMN1 copy-number difficult by next generation sequencing (NGS). 
 
-SMAca is a python tool to detect putative SMA carriers and estimate the absolute SMN1 copy-number in a population. Moreover, SMAca takes advantage of the knowledge of certain variants specific to SMN1 duplication to also identify the so-called “silent carriers”.
+SMAca is a python tool to detect putative SMA carriers and estimate the absolute SMN1 copy-number in a population. Moreover, SMAca takes advantage of the knowledge of certain variants specific to SMN1 duplication to also identify the so-called “silent carriers” (i.e. individuals with two copies of SMN1 on one chromosome, but none on the other).
 
-This tool is developed with multithreading supported to afford high performance and a focus on easy installation. This combination makes it especially attractive to be integrated into production NGS pipelines.
+This tool is developed with multithreading support to afford high performance and a focus on easy installation. This combination makes it especially attractive to be integrated into production NGS pipelines.
 
 
 
@@ -62,13 +62,13 @@ SMAca outputs a number of statistics for each sample:
 
 :avg_cov_x: average coverage for the whole gene *x*.
 
-:std_control: standard deviation for the average coverage of the 20 control.
+:std_control: standard deviation for the average coverage of the 20 control genes.
 
-:g.27134T>G: consensus sequence at position 27134 as well as counts for "A", "C", "G" and "T".
+:g.27134T>G: consensus sequence at position 27134, as well as counts for "A", "C", "G" and "T".
 
-:g.27706_27707delAT: consensus sequence at positions 27706-27707 as well as counts for "A", "C", "G" and "T".  
+:g.27706_27707delAT: consensus sequence at positions 27706-27707, as well as counts for "A", "C", "G" and "T".  
 
-:scale_factor: scale factor proportional to the total SMN1 and SMN2 copy number.
+:scale_factor: scale factor proportional to the total SMN1 and SMN2 copy-number.
 
 
 
@@ -76,9 +76,9 @@ SMAca outputs a number of statistics for each sample:
 interpretation
 --------------
 
-SMA carriers with a single SMN1 copy are expected to have **Pi_b** values under 1/3. However, complex SMN reorganizations may leads to large differences between **Pi_a**, **Pi_b** and **Pi_c**. These cases should be analized carefully.
+SMA carriers with a single SMN1 copy are expected to have **Pi_b** values under 1/3. However, complex SMN reorganizations may lead to large differences between **Pi_a**, **Pi_b** and **Pi_c**. These cases should be analyzed carefully.
 
-The **scale_factor**, that is proportional to the absolute number of SMN1 and SMN2 copies, and **cov_x_p** can be used to estimate the absolute SMN1:SMN2 copy-number as follows:
+The **scale_factor**, which is proportional to the absolute number of SMN1 and SMN2 copies, and **cov_x_p** can be used to estimate the absolute SMN1:SMN2 copy-number as follows:
 
 +----------+--------------+-----------------------+
 | genotype | scale_factor | cov_SMN1_p/cov_SMN2_p |
@@ -95,7 +95,7 @@ In order to detect the so-called *silent carriers* (i.e. individuals with two co
 
 
 
-instalation
+installation
 -----------
 
 SMAca is available through PyP:
