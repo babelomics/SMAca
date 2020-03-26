@@ -3,6 +3,9 @@
 author: Daniel López
 email: daniel.lopez.lopez@juntadeandalucia.es
 
+author: Carlos Loucera
+email: carlos.loucera@juntadeandalucia.es
+
 SMA carrier Test program logic.
 """
 
@@ -12,7 +15,6 @@ import io
 import pstats
 
 import click
-
 from smaca.sma import SmaCalculator
 
 
@@ -22,10 +24,7 @@ from smaca.sma import SmaCalculator
               default="output.csv",
               type=click.Path(writable=True),
               help='output file')
-@click.option('--ncpus',
-              default=1,
-              type=int,
-              help='number of cores to use')
+@click.option('--ncpus', default=1, type=int, help='number of cores to use')
 @click.argument("bam_list",
                 type=click.Path(exists=True),
                 nargs=-1,
@@ -34,7 +33,7 @@ def main(profile, output, bam_list, ncpus):
     """
     Predict proportion of SMN1:SMN2 for a set of BAM files.
 
-    bamlist: input BAM files list
+    bam_list: input BAM files list
     """
     if not bam_list:
         ctx = click.get_current_context()

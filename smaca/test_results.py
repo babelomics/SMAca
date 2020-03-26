@@ -1,22 +1,21 @@
+import filecmp
 import unittest
 from pathlib import Path
 
 import numpy as np
 import pysam
-import filecmp
-
-import constants as data
-import utils
-from sma import Bam, SmaCalculator
+from smaca import constants as data
+from smaca import utils
+from smaca.sma import Bam, SmaCalculator
 
 DATA_PATH = Path(__file__).parent.joinpath("data")
 BAM_LIST = [
-    DATA_PATH.joinpath(
-        "151002_7001448_0359_AC7F6GANXX_Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008.posiSrt.markDup.includedRegions.bam"
-    ),
-    DATA_PATH.joinpath(
-        "151002_7001448_0359_AC7F6GANXX_Sample_HG003-EEogPU_v02-KIT-Av5_TCTTCACA_L008.posiSrt.markDup.includedRegions.bam"
-    ),
+    DATA_PATH.joinpath("151002_7001448_0359_AC7F6GANXX_"
+                       "Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008"
+                       ".posiSrt.markDup.includedRegions.bam"),
+    DATA_PATH.joinpath("151002_7001448_0359_AC7F6GANXX_"
+                       "Sample_HG003-EEogPU_v02-KIT-Av5_TCTTCACA_L008"
+                       ".posiSrt.markDup.includedRegions.bam"),
     DATA_PATH.joinpath("HG004.mate_pair.sorted.includedRegions.bam")
 ]
 
@@ -78,6 +77,7 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(parallel_out_fpath.exists())
         self.assertTrue(serial_out_fpath.exists())
         self.assertTrue(filecmp.cmp(parallel_out_fpath, serial_out_fpath))
+
 
 if __name__ == '__main__':
     unittest.main()

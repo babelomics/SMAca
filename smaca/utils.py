@@ -3,11 +3,13 @@
 author: Daniel López
 email: daniel.lopez.lopez@juntadeandalucia.es
 
+author: Carlos Loucera
+email: carlos.loucera@juntadeandalucia.es
+
 SMA carrier Test utilities module.
 """
 
 import numpy as np
-
 from smaca.constants import SMN
 
 

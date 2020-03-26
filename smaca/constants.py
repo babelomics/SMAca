@@ -3,6 +3,9 @@
 author: Daniel López
 email: daniel.lopez.lopez@juntadeandalucia.es
 
+author: Carlos Loucera
+email: carlos.loucera@juntadeandalucia.es
+
 SMA carrier Test samtools constants file. Genomic ranges are 0-based, stop-excluded
 """
 

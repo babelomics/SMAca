@@ -3,20 +3,22 @@
 author: Daniel López
 email: daniel.lopez.lopez@juntadeandalucia.es
 
+author: Carlos Loucera
+email: carlos.loucera@juntadeandalucia.es
+
 SMA carrier Test main class.
 """
+
+import tempfile
 
 import click
 import numpy as np
 import pysam
-
+from joblib import Parallel, delayed
 from smaca import constants as data
 from smaca.utils import get_chr_prefix, get_total_depth
-import tempfile
-from joblib import Parallel, delayed
 
 BASES = np.array(["A", "C", "G", "T"])
-
 
 
 class SmaCalculator:
@@ -61,16 +63,10 @@ class SmaCalculator:
 
         if n_jobs == 1:
             with click.progressbar(length=self.n_bam,
-                                label='processing BAM files') as bar:
+                                   label='processing BAM files') as bar:
                 for i in bar:
-                    self.compute(
-                        bam_list[i],
-                        i,
-                        self.D1_ij,
-                        self.D2_ij,
-                        self.H_ik,
-                        self.c_ix,
-                        self.dup_id)
+                    self.compute(bam_list[i], i, self.D1_ij, self.D2_ij,
+                                 self.H_ik, self.c_ix, self.dup_id)
         else:
             from pathlib import Path
 
@@ -90,33 +86,26 @@ class SmaCalculator:
 
             H_ik_fname_memmap = Path(tmp_dir).joinpath("H_ik_memmap")
             H_ik_memmap = np.memmap(H_ik_fname_memmap,
-                                     dtype=np.float,
-                                     shape=(n_bam, len(data.GENES)),
-                                     mode='w+')
+                                    dtype=np.float,
+                                    shape=(n_bam, len(data.GENES)),
+                                    mode='w+')
 
             c_ix_fname_memmap = Path(tmp_dir).joinpath("c_ix_memmap")
             c_ix_memmap = np.memmap(c_ix_fname_memmap,
-                                     dtype=np.float,
-                                     shape=(n_bam, len(data.SMN)),
-                                     mode='w+')
+                                    dtype=np.float,
+                                    shape=(n_bam, len(data.SMN)),
+                                    mode='w+')
 
             dup_id_fname_memmap = Path(tmp_dir).joinpath("dup_id_memmap")
             dup_id_memmap = np.memmap(dup_id_fname_memmap,
-                                     dtype="S100",
-                                     shape=(n_bam, len(data.DUP_MARK)),
-                                     mode='w+')
+                                      dtype="S100",
+                                      shape=(n_bam, len(data.DUP_MARK)),
+                                      mode='w+')
 
-
-
-            Parallel(n_jobs=n_jobs)(delayed(self.compute)(
-                    bam_list[idx],
-                    idx,
-                    D1_ij_memmap,
-                    D2_ij_memmap,
-                    H_ik_memmap,
-                    c_ix_memmap,
-                    dup_id_memmap)
-                for idx in range(self.n_bam))
+            Parallel(n_jobs=n_jobs)(delayed(
+                self.compute)(bam_list[idx], idx, D1_ij_memmap, D2_ij_memmap,
+                              H_ik_memmap, c_ix_memmap, dup_id_memmap)
+                                    for idx in range(self.n_bam))
 
             self.D1_ij[:] = D1_ij_memmap[:]
             self.D2_ij[:] = D2_ij_memmap[:]
@@ -141,20 +130,15 @@ class SmaCalculator:
         """
 
         out_array = np.concatenate(
-            (
-                self.bam_list.reshape((self.n_bam, 1)),
-                self.pi_ij,
-                self.D1_ij,
-                self.D2_ij,
-                self.c_ix,
-                self.theta_i.reshape((self.n_bam, 1)),
-                self.std_i.reshape((self.n_bam, 1)),
-                self.dup_id.reshape((self.n_bam, 2)),
-                self.H_ik
-            ),
+            (self.bam_list.reshape((self.n_bam, 1)), self.pi_ij, self.D1_ij,
+             self.D2_ij, self.c_ix, self.theta_i.reshape(
+                 (self.n_bam, 1)), self.std_i.reshape(
+                     (self.n_bam, 1)), self.dup_id.reshape(
+                         (self.n_bam, 2)), self.H_ik),
             axis=1)
+        h_quant = np.quantile(self.H_ik, [0.25, 0.5, 0.75])
         footer = f"Control genes min coverage:{np.min(self.H_ik)}\n" \
-                 f"Control genes quartile 1,2,3 coverage:{np.quantile(self.H_ik,[0.25,0.5,0.75])}\n" \
+                 f"Control genes quartile 1,2,3 coverage:{h_quant}\n" \
                  f"Control genes average coverage:{self.H_ik.mean()}\n" \
                  f"Control genes max coverage:{np.max(self.H_ik)}\n" \
                  f"Control genes standard deviation: {self.std_k}"
@@ -167,14 +151,7 @@ class SmaCalculator:
                    footer=footer)
 
     @staticmethod
-    def compute(bam_file,
-                i,
-                D1_ij,
-                D2_ij,
-                H_ik,
-                c_ix,
-                dup_id
-                ):
+    def compute(bam_file, i, D1_ij, D2_ij, H_ik, c_ix, dup_id):
         b = Bam(bam_file)
         D1_ij[i] = b.get_cov_ranges(data.SMN1_POS)
         D2_ij[i] = b.get_cov_ranges(data.SMN2_POS)
@@ -183,6 +160,7 @@ class SmaCalculator:
         for d in range(len(data.DUP_MARK)):
             dup_id[i][d] = b.get_consensus_sequence(
                 list(data.DUP_MARK.values())[d])
+
 
 class Bam:
     """
