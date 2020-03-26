@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-__pycache__
 
 # C extensions
 *.so
@@ -27,16 +26,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-*.pyc
-*.pyo
-__pycache__
-*.so
-*.o
-
-*.egg
-*.egg-info
-.*cache*/
-*venv*/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -62,8 +51,6 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
-.*cache*/
-
 
 # Translations
 *.mo
@@ -86,6 +73,7 @@ instance/
 docs/_build/
 
 # PyBuilder
+.pybuilder/
 target/
 
 # Jupyter Notebook
@@ -146,6 +134,13 @@ dmypy.json
 
 # pytype static type analyzer
 .pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# static files generated from Django application using `collectstatic`
+media
+static
 
 # vcode
 .vscode/settings.json
