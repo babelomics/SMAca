@@ -6,4 +6,5 @@ install:
   - pip install --upgrade pip
   - pip install Cython
   - pip install tox-travis
+  - pip install tox-conda
 script: tox
