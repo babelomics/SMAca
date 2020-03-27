@@ -11,7 +11,7 @@ README = (HERE / "README.rst").read_text()
 
 setup(
     name='smaca',
-    version='1.0',
+    version='1.0.1',
     packages=find_packages(),
     url='https://github.com/babelomics/SMAca',
     license='GNU General Public License v.3.0',
