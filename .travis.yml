@@ -36,9 +36,13 @@ before_install:
 - conda create -n $PACKAGENAME python=$TRAVIS_PYTHON_VERSION
 - source activate $PACKAGENAME
 - conda install $CONDA_DEPS
+- pip install codecov coverage
 
 install:
 - python setup.py install
 
 script:
-- python -m unittest discover
+- coverage run -m unittest discover
+
+after_success:
+  - codecov # submit coverage
