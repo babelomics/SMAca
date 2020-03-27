@@ -117,7 +117,7 @@ It also works with a barebone environment:
   $ pip install smaca
 
 
-SMAca is available through PyP. Follow the steps to properly install pysam `PySam <https://github.com/pysam-developers/pysam>`
+SMAca is available through PyP. Follow the steps to properly install `PySam <https://github.com/pysam-developers/pysam>`_
 :
 
 ::
