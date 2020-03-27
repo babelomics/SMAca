@@ -1,6 +1,14 @@
 
 language: python
 
+notifications:
+  email:
+    recipients:
+    - carlos.loucera@juntadeandalucia.es
+    - d.lopez.bioinfo@gmail.com
+    on_success: always
+    on_failure: always
+
 # sudo false implies containerized builds
 sudo: false
 
