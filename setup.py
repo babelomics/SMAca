@@ -21,6 +21,6 @@ setup(
     long_description=README,
     long_description_content_type="text/x-rst",
     python_requires='>=3.6',
-    install_requires=['click', 'numpy', 'pysam', 'joblib'],
+    install_requires=['click', 'cython', 'numpy', 'pysam', 'joblib'],
     include_package_data=True,
     entry_points={'console_scripts': ['smaca = smaca.cli:main']})

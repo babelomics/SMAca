@@ -2,6 +2,9 @@
 SMAca: SMA Carrier Analysis tool
 ================================
 
+.. image:: https://travis-ci.com/babelomics/SMAca.svg?branch=master
+    :target: https://travis-ci.com/babelomics/SMAca
+
 * `summary`_
 * `usage`_
 * `output`_
@@ -13,7 +16,7 @@ SMAca: SMA Carrier Analysis tool
 summary
 -------
 
-Spinal Muscular Atrophy (SMA) is a severe neuromuscular autosomal recessive disorder affecting 1/10,000 live births. Most SMA patients present homozygous deletion of SMN1, while most SMA carriers present only a single SMN1 copy. The sequence similarity between SMN1 and SMN2, and the complexity of the SMN locus, make the estimation of the SMN1 copy-number difficult by next generation sequencing (NGS). 
+Spinal Muscular Atrophy (SMA) is a severe neuromuscular autosomal recessive disorder affecting 1/10,000 live births. Most SMA patients present homozygous deletion of SMN1, while most SMA carriers present only a single SMN1 copy. The sequence similarity between SMN1 and SMN2, and the complexity of the SMN locus, make the estimation of the SMN1 copy-number difficult by next generation sequencing (NGS).
 
 SMAca is a python tool to detect putative SMA carriers and estimate the absolute SMN1 copy-number in a population. Moreover, SMAca takes advantage of the knowledge of certain variants specific to SMN1 duplication to also identify the so-called “silent carriers” (i.e. individuals with two copies of SMN1 on one chromosome, but none on the other).
 
@@ -30,7 +33,7 @@ You can run SMAca by typing at the terminal:
 
 ::
 
-  $ smaca sample1.bam sample2.bam sample3.bam 
+  $ smaca sample1.bam sample2.bam sample3.bam
 
 
 
@@ -51,7 +54,7 @@ For additional options use:
 
 
 
-output 
+output
 ------
 
 SMAca outputs a number of statistics for each sample:
@@ -66,7 +69,7 @@ SMAca outputs a number of statistics for each sample:
 
 :g.27134T>G: consensus sequence at position 27134, as well as counts for "A", "C", "G" and "T".
 
-:g.27706_27707delAT: consensus sequence at positions 27706-27707, as well as counts for "A", "C", "G" and "T".  
+:g.27706_27707delAT: consensus sequence at positions 27706-27707, as well as counts for "A", "C", "G" and "T".
 
 :scale_factor: scale factor proportional to the total SMN1 and SMN2 copy-number.
 
@@ -98,22 +101,41 @@ In order to detect the so-called *silent carriers* (i.e. individuals with two co
 installation
 ------------
 
-SMAca is available through PyP:
+If you are using the conda packaging manager (recommended), note that it has been tested on python 3.6 and 3.7, this is our recommended (it follows the guidelines of the PySam team) path for installing SMAca:
+
+::
+
+  $ conda create -n <env_name> -c bioconda -c defaults python=<py_version> cython joblib numpy pysam
+  $ conda activate <env_name>
+  $ pip install smaca
+
+It also works with a barebone environment:
+
+::
+
+  $ conda create -n <env_name> python=<py_version>
+  $ pip install smaca
+
+
+SMAca is available through PyP. Follow the steps to properly install pysam `PySam <https://github.com/pysam-developers/pysam>`
+:
 
 ::
 
   $ pip install smaca
 
-If you are using the conda packaging manager (e.g. miniconda or anaconda), you can install SMAca from the bioconda channel:
+
+Developers can clone the repository, create a conda/pip environment and install in editable mode. Be sure to attend the previous recommendations:
 
 ::
 
-  $ conda config --add channels defaults
-  $ conda config --add channels conda-forge
-  $ conda config --add channels bioconda
-  $ conda install smaca
+  $ git clone git+https://www.github.com/babelomics/SMAca.git
+  $ cd SMAca
+  $ conda create -n <env_name> -c bioconda -c defaults python=<py_version> cython joblib numpy pysam
+  $ conda activate <env_name>
+  $ pip install --editable=.
 
-Developers can clone the repository, create a conda/pip environment and install in editable mode:
+Or, using standard python (follow the pysam recommendations):
 
 ::
 
@@ -124,8 +146,13 @@ Developers can clone the repository, create a conda/pip environment and install 
   $ pip install --editable=.
 
 
-
 citation
 --------
 
-Daniel Lopez-Lopez, Rosario Carmona, Carlos Loucera, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data, XXX
+Daniel Lopez-Lopez, Rosario Carmona, Carlos Loucera, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data
+
+TODO
+----
+
+* Create a conda package (bioconda)
+* Refactor the code to follow the python good practice guidelines as much as possible
