@@ -108,7 +108,7 @@ SMAca is available through PyP. Follow the steps to properly install pysam `PySa
 
   $ pip install smaca
 
-If you are using the conda packaging manager (recommended), note that it has been testd on python 3.6 and 3.7, this is our recommended (it follows the guidelines of the PySam team) path for installing SMAca:
+If you are using the conda packaging manager (recommended), note that it has been tested on python 3.6 and 3.7, this is our recommended (it follows the guidelines of the PySam team) path for installing SMAca:
 
 ::
 
