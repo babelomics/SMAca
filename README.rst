@@ -101,13 +101,6 @@ In order to detect the so-called *silent carriers* (i.e. individuals with two co
 installation
 ------------
 
-SMAca is available through PyP. Follow the steps to properly install pysam `PySam <https://github.com/pysam-developers/pysam>`
-:
-
-::
-
-  $ pip install smaca
-
 If you are using the conda packaging manager (recommended), note that it has been tested on python 3.6 and 3.7, this is our recommended (it follows the guidelines of the PySam team) path for installing SMAca:
 
 ::
@@ -123,7 +116,26 @@ It also works with a barebone environment:
   $ conda create -n <env_name> python=<py_version>
   $ pip install smaca
 
+
+SMAca is available through PyP. Follow the steps to properly install pysam `PySam <https://github.com/pysam-developers/pysam>`
+:
+
+::
+
+  $ pip install smaca
+
+
 Developers can clone the repository, create a conda/pip environment and install in editable mode. Be sure to attend the previous recommendations:
+
+::
+
+  $ git clone git+https://www.github.com/babelomics/SMAca.git
+  $ cd SMAca
+  $ conda create -n <env_name> -c bioconda -c defaults python=<py_version> cython joblib numpy pysam
+  $ conda activate <env_name>
+  $ pip install --editable=.
+
+Or, using standard python (follow the pysam recommendations):
 
 ::
 
@@ -133,15 +145,6 @@ Developers can clone the repository, create a conda/pip environment and install 
   $ source smaca_venv/bin/activate
   $ pip install --editable=.
 
-Or, using conda:
-
-::
-
-  $ git clone git+https://www.github.com/babelomics/SMAca.git
-  $ cd SMAca
-  $ conda create -n <env_name> -c bioconda -c defaults python=<py_version> cython joblib numpy pysam
-  $ conda activate <env_name>
-  $ pip install --editable=.
 
 citation
 --------
