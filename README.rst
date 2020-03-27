@@ -5,6 +5,9 @@ SMAca: SMA Carrier Analysis tool
 .. image:: https://travis-ci.com/babelomics/SMAca.svg?branch=master
     :target: https://travis-ci.com/babelomics/SMAca
 
+.. image:: https://codecov.io/gh/babelomics/SMAca/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/babelomics/SMA
+
 * `summary`_
 * `usage`_
 * `output`_
