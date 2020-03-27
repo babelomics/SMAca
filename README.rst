@@ -18,7 +18,7 @@ summary
 
 Spinal Muscular Atrophy (SMA) is a severe neuromuscular autosomal recessive disorder affecting 1/10,000 live births. Most SMA patients present homozygous deletion of SMN1, while most SMA carriers present only a single SMN1 copy. The sequence similarity between SMN1 and SMN2, and the complexity of the SMN locus, make the estimation of the SMN1 copy-number difficult by next generation sequencing (NGS).
 
-SMAca [1]_ is a python tool to detect putative SMA carriers and estimate the absolute SMN1 copy-number in a population. Moreover, SMAca takes advantage of the knowledge of certain variants specific to SMN1 duplication to also identify the so-called “silent carriers” (i.e. individuals with two copies of SMN1 on one chromosome, but none on the other).
+SMAca is a python tool to detect putative SMA carriers and estimate the absolute SMN1 copy-number in a population. Moreover, SMAca takes advantage of the knowledge of certain variants specific to SMN1 duplication to also identify the so-called “silent carriers” (i.e. individuals with two copies of SMN1 on one chromosome, but none on the other).
 
 This tool is developed with multithreading support to afford high performance and a focus on easy installation. This combination makes it especially attractive to be integrated into production NGS pipelines.
 
@@ -149,7 +149,9 @@ Or, using standard python (follow the pysam recommendations):
 citation
 --------
 
-.. [1] Daniel Lopez-Lopez, Carlos Loucera, Rosario Carmona, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data.
+Please, cite as:
+
+Daniel Lopez-Lopez, Carlos Loucera, Rosario Carmona, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data.
 
 TODO
 ----
