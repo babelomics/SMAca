@@ -1,8 +1,9 @@
-[![Build Status](https://travis-ci.com/babelomics/SMAca.svg?branch=master)](https://travis-ci.com/babelomics/SMAca)
-
 ================================
 SMAca: SMA Carrier Analysis tool
 ================================
+
+.. image:: https://travis-ci.com/babelomics/SMAca.svg?branch=master
+    :target: https://travis-ci.com/babelomics/SMAca
 
 * `summary`_
 * `usage`_
@@ -145,7 +146,7 @@ Or, using conda:
 citation
 --------
 
-Daniel Lopez-Lopez, Rosario Carmona, Carlos Loucera, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data, XXX
+Daniel Lopez-Lopez, Rosario Carmona, Carlos Loucera, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data
 
 TODO
 ----
