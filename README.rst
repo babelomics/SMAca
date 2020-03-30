@@ -44,7 +44,7 @@ For a large number of samples, the **ncpus** option is recommended:
 
 ::
 
-  $ smaca --output results.batch1.csv --ncpus 24 $(cat samplelist.batch1.txt)
+  $ smaca --output results.batch1.csv --ncpus 12 $(cat samplelist.batch1.txt)
 
 
 
