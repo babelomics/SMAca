@@ -26,7 +26,9 @@ SMAca is a python tool to detect putative SMA carriers and estimate the absolute
 This tool is developed with multithreading support to afford high performance and a focus on easy installation. This combination makes it especially attractive to be integrated into production NGS pipelines.
 
 
-
+release history
+---------------
+* v1.2.1 add HG38/GRCh38 support
 
 
 usage
