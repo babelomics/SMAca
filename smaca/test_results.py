@@ -10,21 +10,21 @@ from smaca import utils
 from smaca.sma import Bam, SmaCalculator
 
 DATA_PATH = Path(__file__).parent.joinpath("data")
-BAM_LIST = [
-    DATA_PATH.joinpath("151002_7001448_0359_AC7F6GANXX_"
-                       "Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008"
-                       ".posiSrt.markDup.includedRegions.bam"),
-    DATA_PATH.joinpath("151002_7001448_0359_AC7F6GANXX_"
-                       "Sample_HG003-EEogPU_v02-KIT-Av5_TCTTCACA_L008"
-                       ".posiSrt.markDup.includedRegions.bam"),
-    DATA_PATH.joinpath("HG004.mate_pair.sorted.includedRegions.bam")
-]
 
 BAM_hg19 = DATA_PATH.joinpath(
     "HG007.hs37d5.100x.includedRegions.downSampled.bam")
 BAM_hg38 = DATA_PATH.joinpath(
     "HG007.GRCh38_full_plus_hs38d1_analysis_"
     "set_minus_alts.100x.includedRegions.downSampled.bam")
+
+BAM_LIST = [
+    DATA_PATH.joinpath("151002_7001448_0359_AC7F6GANXX_"
+                       "Sample_HG002-EEogPU_v02-KIT-Av5_AGATGTAC_L008"
+                       ".posiSrt.markDup.includedRegions.bam"),
+    BAM_hg19
+]
+
+
 
 
 class MyTestCase(unittest.TestCase):
@@ -68,16 +68,16 @@ class MyTestCase(unittest.TestCase):
         s = SmaCalculator(BAM_LIST, ref=C.REF_HG19)
 
         np.testing.assert_array_almost_equal(
-            s.pi_ij[0], [0.58264685, 0.5296146, 0.47764956])
-        self.assertAlmostEqual(s.zmean_k[0], 1.5592104677167276)
+            s.pi_ij[0], [0.8027337510925755, 0.7296692915157783, 0.6580751624125392])
+        self.assertAlmostEqual(s.zmean_k[0], 0.6135924580475719)
         np.testing.assert_array_almost_equal(
-            s.std_i, [21.18266345, 17.4505619, 0.99442209])
-        self.assertAlmostEqual(s.std_k[0], 11.03630077)
+            s.std_i, [21.18266345, 5.07109509])
+        self.assertAlmostEqual(s.std_k[0], 15.516854393351194)
         self.assertEqual(s.dup_id[0][0], b'T [[0], [0], [0], [106]]')
 
     def test_get_chr_prefix(self):
-        sam_file = pysam.AlignmentFile(BAM_LIST[0], "rb")
-        sam_file_chr = pysam.AlignmentFile(BAM_LIST[2], "rb")
+        sam_file = pysam.AlignmentFile(BAM_hg19, "rb")
+        sam_file_chr = pysam.AlignmentFile(BAM_hg38, "rb")
 
         self.assertEqual(utils.get_chr_prefix(sam_file), '')
         self.assertEqual(utils.get_chr_prefix(sam_file_chr), 'chr')
