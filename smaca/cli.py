@@ -31,7 +31,7 @@ from smaca.sma import SmaCalculator
 @click.option('--ncpus', default=1, type=int, help='number of cores to use')
 @click.option('--reference',
               default=C.REF_HG19,
-              type=click.Choice([C.REF_HG19, C.REF_HS37D5, C.REF_HG38]),
+              type=click.Choice([C.REF_HG19, C.REF_HG38]),
               help='reference genome that was used for alignment')
 @click.argument("bam_list",
                 type=click.Path(exists=True),

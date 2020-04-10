@@ -10,7 +10,6 @@ SMA carrier Test samtools constants file. Genomic ranges are 0-based, stop-exclu
 """
 
 REF_HG19 = "hg19"
-REF_HS37D5 = REF_HG19
 REF_HG38 = "hg38"
 
 HEADER_FILE = \
