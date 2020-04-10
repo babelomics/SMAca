@@ -36,7 +36,7 @@ You can run SMAca by typing at the terminal:
 
 ::
 
-  $ smaca sample1.bam sample2.bam sample3.bam
+  $ smaca --reference hg38 sample1.bam sample2.bam sample3.bam
 
 
 

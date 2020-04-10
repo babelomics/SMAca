@@ -16,25 +16,35 @@ import pstats
 
 import click
 from smaca.sma import SmaCalculator
-
+import smaca.constants as C
 
 @click.command()
-@click.option("--profile", is_flag=True)
+@click.option("--profile",
+              is_flag=True,
+              help="execution statistics (only for debug purposes)")
 @click.option('--output',
               default="output.csv",
               type=click.Path(writable=True),
               help='output file')
-@click.option('--ncpus', default=1, type=int, help='number of cores to use')
+@click.option('--ncpus',
+              default=1,
+              type=int,
+              help='number of cores to use')
+@click.option('--reference',
+              default=C.REF_HG19,
+              type=click.Choice([C.REF_HG19, C.REF_HS37D5, C.REF_HG38]),
+              help='reference genome that was used for alignment')
 @click.argument("bam_list",
                 type=click.Path(exists=True),
                 nargs=-1,
                 required=True)
-def main(profile, output, bam_list, ncpus):
+def main(profile, output, bam_list, ncpus, ref_genome):
     """
-    Predict proportion of SMN1:SMN2 for a set of BAM files.
+    Spinal Muscular Atrophy Carrier Analysis tool. Detect putative SMA carriers
+    and estimate the absolute SMN1 copy-number in a population.
 
-    bam_list: input BAM files list
     """
+
     if not bam_list:
         ctx = click.get_current_context()
         ctx.get_help()
@@ -55,7 +65,7 @@ def main(profile, output, bam_list, ncpus):
 
         atexit.register(exit)
 
-    res = SmaCalculator(bam_list, n_jobs=ncpus)
+    res = SmaCalculator(bam_list=bam_list, ref=ref_genome, n_jobs=ncpus)
     res.write_stats(output)
 
 

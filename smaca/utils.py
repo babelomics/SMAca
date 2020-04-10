@@ -10,7 +10,6 @@ SMA carrier Test utilities module.
 """
 
 import numpy as np
-from smaca.constants import SMN
 
 
 def get_total_depth(sam_file, chrom, start, end):
@@ -49,17 +48,4 @@ def get_chr_prefix(sam_file):
                 prefix = ""
 
             break
-
-    # safety check
-    try:
-        c, start, stop = SMN["SMN1"]
-        c = f"{prefix}{c}"
-        sam_file.count(c, start, stop)
-
-    except ValueError:
-        print(
-            "The reference genome used is not supported. Supported reference genomes are hg19 and hs37d5"
-        )
-        raise SystemExit
-
     return prefix
