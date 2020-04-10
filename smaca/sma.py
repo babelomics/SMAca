@@ -14,6 +14,7 @@ import tempfile
 import click
 import numpy as np
 from joblib import Parallel, delayed
+
 from smaca import constants as C
 from smaca.bam import Bam
 
@@ -55,7 +56,8 @@ class SmaCalculator:
         # std of coverage in housekeeping gene k for each sample
         self.std_k = np.zeros((len(C.POSITIONS[ref]["GENES"]), ))
         # get consensus sequence on dup. markers
-        self.dup_id = np.empty((self.n_bam, len(C.POSITIONS[ref]["DUP_MARK"])), dtype="S100")
+        self.dup_id = np.empty((self.n_bam, len(C.POSITIONS[ref]["DUP_MARK"])),
+                               dtype="S100")
 
         bam_list = np.array(bam_list)
         n_bam = len(bam_list)
@@ -74,32 +76,37 @@ class SmaCalculator:
             D1_ij_fname_memmap = Path(tmp_dir).joinpath("D1_ij_memmap")
             D1_ij_memmap = np.memmap(D1_ij_fname_memmap.as_posix(),
                                      dtype=np.float,
-                                     shape=(n_bam, len(C.POSITIONS[ref]["SMN1_POS"])),
+                                     shape=(n_bam,
+                                            len(C.POSITIONS[ref]["SMN1_POS"])),
                                      mode='w+')
 
             D2_ij_fname_memmap = Path(tmp_dir).joinpath("D2_ij_memmap")
             D2_ij_memmap = np.memmap(D2_ij_fname_memmap,
                                      dtype=np.float,
-                                     shape=(n_bam, len(C.POSITIONS[ref]["SMN2_POS"])),
+                                     shape=(n_bam,
+                                            len(C.POSITIONS[ref]["SMN2_POS"])),
                                      mode='w+')
 
             H_ik_fname_memmap = Path(tmp_dir).joinpath("H_ik_memmap")
             H_ik_memmap = np.memmap(H_ik_fname_memmap,
                                     dtype=np.float,
-                                    shape=(n_bam, len(C.POSITIONS[ref]["GENES"])),
+                                    shape=(n_bam,
+                                           len(C.POSITIONS[ref]["GENES"])),
                                     mode='w+')
 
             c_ix_fname_memmap = Path(tmp_dir).joinpath("c_ix_memmap")
             c_ix_memmap = np.memmap(c_ix_fname_memmap,
                                     dtype=np.float,
-                                    shape=(n_bam, len(C.POSITIONS[ref]["SMN"])),
+                                    shape=(n_bam,
+                                           len(C.POSITIONS[ref]["SMN"])),
                                     mode='w+')
 
             dup_id_fname_memmap = Path(tmp_dir).joinpath("dup_id_memmap")
-            dup_id_memmap = np.memmap(dup_id_fname_memmap,
-                                      dtype="S100",
-                                      shape=(n_bam, len(C.POSITIONS[ref]["DUP_MARK"])),
-                                      mode='w+')
+            dup_id_memmap = np.memmap(
+                dup_id_fname_memmap,
+                dtype="S100",
+                shape=(n_bam, len(C.POSITIONS[ref]["DUP_MARK"])),
+                mode='w+')
 
             Parallel(n_jobs=n_jobs)(delayed(
                 self.compute)(bam_list[idx], idx, D1_ij_memmap, D2_ij_memmap,
@@ -118,7 +125,8 @@ class SmaCalculator:
         self.std_k = np.std(self.H_ik, axis=0)
         self.std_i = np.std(self.H_ik, axis=1)
         self.zmean_k = self.z_ik.sum(axis=0) / self.n_bam
-        self.theta_i = (self.z_ik / self.zmean_k).sum(axis=1) / len(C.POSITIONS[ref]["GENES"])
+        self.theta_i = (self.z_ik / self.zmean_k).sum(axis=1) / len(
+            C.POSITIONS[ref]["GENES"])
         self.pi_ij = self.theta_i.reshape(
             (self.n_bam, 1)) * (self.D1_ij / self.r_ij)
 
@@ -159,4 +167,3 @@ class SmaCalculator:
         for d in range(len(C.POSITIONS[ref]["DUP_MARK"])):
             dup_id[i][d] = b.get_consensus_sequence(
                 list(C.POSITIONS[ref]["DUP_MARK"].values())[d])
-

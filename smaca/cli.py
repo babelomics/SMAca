@@ -15,8 +15,10 @@ import io
 import pstats
 
 import click
-from smaca.sma import SmaCalculator
+
 import smaca.constants as C
+from smaca.sma import SmaCalculator
+
 
 @click.command()
 @click.option("--profile",
@@ -26,10 +28,7 @@ import smaca.constants as C
               default="output.csv",
               type=click.Path(writable=True),
               help='output file')
-@click.option('--ncpus',
-              default=1,
-              type=int,
-              help='number of cores to use')
+@click.option('--ncpus', default=1, type=int, help='number of cores to use')
 @click.option('--reference',
               default=C.REF_HG19,
               type=click.Choice([C.REF_HG19, C.REF_HS37D5, C.REF_HG38]),

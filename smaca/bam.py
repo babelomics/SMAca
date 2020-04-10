@@ -9,12 +9,13 @@ email: carlos.loucera@juntadeandalucia.es
 SMA carrier Test main class.
 """
 
-from smaca.utils import get_chr_prefix, get_total_depth
 import numpy as np
 import pysam
 
+from smaca.utils import get_chr_prefix, get_total_depth
 
 BASES = np.array(["A", "C", "G", "T"])
+
 
 class Bam:
     """

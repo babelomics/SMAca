@@ -4,6 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import pysam
+
 from smaca import constants as C
 from smaca import utils
 from smaca.sma import Bam, SmaCalculator
@@ -19,9 +20,12 @@ BAM_LIST = [
     DATA_PATH.joinpath("HG004.mate_pair.sorted.includedRegions.bam")
 ]
 
-BAM_hg19 = DATA_PATH.joinpath("HG007.hs37d5.100x.includedRegions.downSampled.bam")
-BAM_hg38 = DATA_PATH.joinpath("HG007.GRCh38_full_plus_hs38d1_analysis_"
-                              "set_minus_alts.100x.includedRegions.downSampled.bam")
+BAM_hg19 = DATA_PATH.joinpath(
+    "HG007.hs37d5.100x.includedRegions.downSampled.bam")
+BAM_hg38 = DATA_PATH.joinpath(
+    "HG007.GRCh38_full_plus_hs38d1_analysis_"
+    "set_minus_alts.100x.includedRegions.downSampled.bam")
+
 
 class MyTestCase(unittest.TestCase):
     def test_get_total_depth(self):
@@ -37,18 +41,28 @@ class MyTestCase(unittest.TestCase):
     def test_bamclass(self):
         b = Bam(BAM_LIST[0])
 
-        self.assertEqual(b.get_genomic_range(C.POSITIONS[C.REF_HG19]["GENES"]['ACAD9']),
-                         ('3', 128598332, 128634910))
-        self.assertEqual(b.get_consensus_sequence(C.POSITIONS[C.REF_HG19]["SMN1_POS"]['SMN1_a']),
-                         'G [[0], [0], [178], [0]]')
-        self.assertEqual(b.get_consensus_sequence(C.POSITIONS[C.REF_HG19]["SMN2_POS"]['SMN2_b_e7']),
-                         'T [[0], [0], [0], [218]]')
-        self.assertEqual(b.get_consensus_sequence(C.POSITIONS[C.REF_HG19]["DUP_MARK"]['g.27134T>G']),
-                         'T [[0], [0], [0], [106]]')
         self.assertEqual(
-            b.get_consensus_sequence(C.POSITIONS[C.REF_HG19]["DUP_MARK"]['g.27706_27707delAT']),
+            b.get_genomic_range(C.POSITIONS[C.REF_HG19]["GENES"]['ACAD9']),
+            ('3', 128598332, 128634910))
+        self.assertEqual(
+            b.get_consensus_sequence(
+                C.POSITIONS[C.REF_HG19]["SMN1_POS"]['SMN1_a']),
+            'G [[0], [0], [178], [0]]')
+        self.assertEqual(
+            b.get_consensus_sequence(
+                C.POSITIONS[C.REF_HG19]["SMN2_POS"]['SMN2_b_e7']),
+            'T [[0], [0], [0], [218]]')
+        self.assertEqual(
+            b.get_consensus_sequence(
+                C.POSITIONS[C.REF_HG19]["DUP_MARK"]['g.27134T>G']),
+            'T [[0], [0], [0], [106]]')
+        self.assertEqual(
+            b.get_consensus_sequence(
+                C.POSITIONS[C.REF_HG19]["DUP_MARK"]['g.27706_27707delAT']),
             'AT [[13, 0], [0, 0], [0, 0], [0, 13]]')
-        self.assertEqual(b.get_cov_ranges(C.POSITIONS[C.REF_HG19]["GENES"])[0], 40.88517688227896)
+        self.assertEqual(
+            b.get_cov_ranges(C.POSITIONS[C.REF_HG19]["GENES"])[0],
+            40.88517688227896)
 
     def test_sma_stats(self):
         s = SmaCalculator(BAM_LIST, ref=C.REF_HG19)
@@ -89,10 +103,11 @@ class MyTestCase(unittest.TestCase):
             c_hg19 = bam_hg19.get_cov_ranges(C.POSITIONS[C.REF_HG19][ranges])
             c_hg38 = bam_hg38.get_cov_ranges(C.POSITIONS[C.REF_HG38][ranges])
 
-            np.testing.assert_array_almost_equal(c_hg19,
-                                                 c_hg38,
-                                                 decimal=0,
-                                                 err_msg=";".join(C.POSITIONS[C.REF_HG19][ranges]))
+            np.testing.assert_array_almost_equal(
+                c_hg19,
+                c_hg38,
+                decimal=0,
+                err_msg=";".join(C.POSITIONS[C.REF_HG19][ranges]))
 
 
 if __name__ == '__main__':
