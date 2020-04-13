@@ -42,11 +42,11 @@ You can run SMAca by typing at the terminal:
 
 
 
-For a large number of samples, the **ncpus** option is recommended:
+SMAca works fine with WGS, WES and panels as long as SMN locus and control genes are covered. The recommendation is to use the same capture kit for the whole set of samples, and analyze a large cohort at the same time. In general, the larger the set of BAMs to analyze at the same time, the easiest to interpret the results. The **ncpus** option is recommended:
 
 ::
 
-  $ smaca --output results.batch1.csv --ncpus 12 $(cat samplelist.batch1.txt)
+  $ smaca --output results.batch1.csv --reference hg19 --ncpus 12 $(cat samplelist.batch1.txt)
 
 
 
