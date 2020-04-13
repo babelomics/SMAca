@@ -37,7 +37,7 @@ from smaca.sma import SmaCalculator
                 type=click.Path(exists=True),
                 nargs=-1,
                 required=True)
-def main(profile, output, bam_list, ncpus, ref_genome):
+def main(profile, output, bam_list, ncpus, reference):
     """
     Spinal Muscular Atrophy Carrier Analysis tool. Detect putative SMA carriers
     and estimate the absolute SMN1 copy-number in a population.
@@ -64,7 +64,7 @@ def main(profile, output, bam_list, ncpus, ref_genome):
 
         atexit.register(exit)
 
-    res = SmaCalculator(bam_list=bam_list, ref=ref_genome, n_jobs=ncpus)
+    res = SmaCalculator(bam_list=bam_list, ref=reference, n_jobs=ncpus)
     res.write_stats(output)
 
 
