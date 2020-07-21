@@ -8,6 +8,12 @@ SMAca: SMA Carrier Analysis tool
 .. image:: https://zenodo.org/badge/250259934.svg
    :target: https://zenodo.org/badge/latestdoi/250259934
 
+.. image:: https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat
+   :target: http://bioconda.github.io/recipes/smaca/README.html
+
+.. image:: https://anaconda.org/bioconda/smaca/badges/downloads.svg
+   :target: https://anaconda.org/bioconda/smaca
+
 * `summary`_
 * `usage`_
 * `output`_
@@ -28,6 +34,7 @@ This tool is developed with multithreading support to afford high performance an
 
 release history
 ---------------
+* v1.2.3 add bioconda recipe
 * v1.2.1 add HG38/GRCh38 support
 
 
@@ -106,20 +113,11 @@ In order to detect the so-called *silent carriers* (i.e. individuals with two co
 installation
 ------------
 
-If you are using the conda packaging manager (recommended), note that it has been tested on python 3.6 and 3.7, this is our recommended (it follows the guidelines of the PySam team) path for installing SMAca:
+If you are using the conda packaging manager (recommended):
 
 ::
 
-  $ conda create -n <env_name> -c bioconda -c defaults python=<py_version> cython joblib numpy pysam
-  $ conda activate <env_name>
-  $ pip install smaca
-
-It also works with a barebone environment:
-
-::
-
-  $ conda create -n <env_name> python=<py_version>
-  $ pip install smaca
+  $ conda install -c bioconda smaca
 
 
 SMAca is available through PyP. Follow the steps to properly install `PySam <https://github.com/pysam-developers/pysam>`_
@@ -161,5 +159,6 @@ Daniel Lopez-Lopez, Carlos Loucera, Rosario Carmona, Virginia Aquino, Josefa Sal
 TODO
 ----
 
-* Create a conda package (bioconda)
-* Refactor the code to follow the python good practice guidelines as much as possible
+- [X] Create a conda package (bioconda)
+- [X] Add HG38/GRCh38 support
+- [  ] Refactor the code to follow the python good practice guidelines as much as possible
