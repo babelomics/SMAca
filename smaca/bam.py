@@ -10,9 +10,8 @@ SMA carrier Test main class.
 """
 
 import numpy as np
-import pysam
 
-from smaca.utils import get_chr_prefix, get_total_depth
+from smaca.utils import get_chr_prefix, get_total_depth, open_alignment_file
 
 BASES = np.array(["A", "C", "G", "T"])
 
@@ -22,9 +21,9 @@ class Bam:
     This class contains statistics of coverage calculated on different genomic
     ranges
     """
-    def __init__(self, bam_file):
+    def __init__(self, bam_file, ref_file=None):
         self.bam_file = bam_file
-        self.samfile = pysam.AlignmentFile(bam_file, "rb")
+        self.samfile = open_alignment_file(bam_file, ref_file)
         #TODO:guess reference genome that was used for alignment
         self.chrPrefix = get_chr_prefix(self.samfile)
 

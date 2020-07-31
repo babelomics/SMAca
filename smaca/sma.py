@@ -23,40 +23,41 @@ class SmaCalculator:
     """This class implements some statistics functions to calculate SMN1:SMN2
     proportion in a set of BAMs.
     """
-    def __init__(self, bam_list, ref, n_jobs=1):
+    def __init__(self, bam_list, ref_version, ref_file=None, n_jobs=1):
         """
-
+        :param ref_file:
         :param bam_list: list of bam files (path)
-        :param ref: reference genome
+        :param ref_version: reference genome version
+        :param ref_file: reference genome FASTA path
         :param n_jobs: number of CPUs
         """
         self.bam_list = np.array(bam_list)
         self.n_bam = len(self.bam_list)
         # number of reads that align to SMN1 at position x
-        self.D1_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref]["SMN1_POS"])))
+        self.D1_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref_version]["SMN1_POS"])))
         # number of reads that align to SMN2 at position x
-        self.D2_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref]["SMN2_POS"])))
+        self.D2_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref_version]["SMN2_POS"])))
         # total number of reads aligned to the SMN1 region at position j
         # and the analogous SMN2 region
-        self.r_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref]["SMN2_POS"])))
+        self.r_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref_version]["SMN2_POS"])))
         # average coverage for HK gene k
-        self.H_ik = np.zeros((self.n_bam, len(C.POSITIONS[ref]["GENES"])))
+        self.H_ik = np.zeros((self.n_bam, len(C.POSITIONS[ref_version]["GENES"])))
         # average coverage for the SMNx gene region
-        self.c_ix = np.zeros((self.n_bam, len(C.POSITIONS[ref]["SMN"])))
+        self.c_ix = np.zeros((self.n_bam, len(C.POSITIONS[ref_version]["SMN"])))
         # scaled coverage for SMN1 and SMN2 for HK gene k
-        self.z_ik = np.zeros((self.n_bam, len(C.POSITIONS[ref]["GENES"])))
+        self.z_ik = np.zeros((self.n_bam, len(C.POSITIONS[ref_version]["GENES"])))
         # scaled proportion of SMN reads that align to SMN1 in exon 7
-        self.pi_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref]["SMN1_POS"])))
+        self.pi_ij = np.zeros((self.n_bam, len(C.POSITIONS[ref_version]["SMN1_POS"])))
         # averaged scaled coverages for SMN1 and SMN2 in the N subjects
-        self.zmean_k = np.zeros((len(C.POSITIONS[ref]["GENES"]), ))
+        self.zmean_k = np.zeros((len(C.POSITIONS[ref_version]["GENES"]),))
         # weighted average of the coverage of SMN1 to our K housekeeping genes
         self.theta_i = np.zeros((self.n_bam, ))
         # std of coverage in housekeeping genes in sample i
         self.std_i = np.zeros((self.n_bam, ))
         # std of coverage in housekeeping gene k for each sample
-        self.std_k = np.zeros((len(C.POSITIONS[ref]["GENES"]), ))
+        self.std_k = np.zeros((len(C.POSITIONS[ref_version]["GENES"]),))
         # get consensus sequence on dup. markers
-        self.dup_id = np.empty((self.n_bam, len(C.POSITIONS[ref]["DUP_MARK"])),
+        self.dup_id = np.empty((self.n_bam, len(C.POSITIONS[ref_version]["DUP_MARK"])),
                                dtype="S100")
 
         bam_list = np.array(bam_list)
@@ -67,7 +68,7 @@ class SmaCalculator:
                                    label='processing BAM files') as bar:
                 for i in bar:
                     self.compute(bam_list[i], i, self.D1_ij, self.D2_ij,
-                                 self.H_ik, self.c_ix, self.dup_id, ref)
+                                 self.H_ik, self.c_ix, self.dup_id, ref_version, ref_file)
         else:
             from pathlib import Path
 
@@ -77,40 +78,40 @@ class SmaCalculator:
             D1_ij_memmap = np.memmap(D1_ij_fname_memmap.as_posix(),
                                      dtype=np.float,
                                      shape=(n_bam,
-                                            len(C.POSITIONS[ref]["SMN1_POS"])),
+                                            len(C.POSITIONS[ref_version]["SMN1_POS"])),
                                      mode='w+')
 
             D2_ij_fname_memmap = Path(tmp_dir).joinpath("D2_ij_memmap")
             D2_ij_memmap = np.memmap(D2_ij_fname_memmap,
                                      dtype=np.float,
                                      shape=(n_bam,
-                                            len(C.POSITIONS[ref]["SMN2_POS"])),
+                                            len(C.POSITIONS[ref_version]["SMN2_POS"])),
                                      mode='w+')
 
             H_ik_fname_memmap = Path(tmp_dir).joinpath("H_ik_memmap")
             H_ik_memmap = np.memmap(H_ik_fname_memmap,
                                     dtype=np.float,
                                     shape=(n_bam,
-                                           len(C.POSITIONS[ref]["GENES"])),
+                                           len(C.POSITIONS[ref_version]["GENES"])),
                                     mode='w+')
 
             c_ix_fname_memmap = Path(tmp_dir).joinpath("c_ix_memmap")
             c_ix_memmap = np.memmap(c_ix_fname_memmap,
                                     dtype=np.float,
                                     shape=(n_bam,
-                                           len(C.POSITIONS[ref]["SMN"])),
+                                           len(C.POSITIONS[ref_version]["SMN"])),
                                     mode='w+')
 
             dup_id_fname_memmap = Path(tmp_dir).joinpath("dup_id_memmap")
             dup_id_memmap = np.memmap(
                 dup_id_fname_memmap,
                 dtype="S100",
-                shape=(n_bam, len(C.POSITIONS[ref]["DUP_MARK"])),
+                shape=(n_bam, len(C.POSITIONS[ref_version]["DUP_MARK"])),
                 mode='w+')
 
             Parallel(n_jobs=n_jobs)(delayed(
                 self.compute)(bam_list[idx], idx, D1_ij_memmap, D2_ij_memmap,
-                              H_ik_memmap, c_ix_memmap, dup_id_memmap, ref)
+                              H_ik_memmap, c_ix_memmap, dup_id_memmap, ref_version, ref_file)
                                     for idx in range(self.n_bam))
 
             self.D1_ij[:] = D1_ij_memmap[:]
@@ -126,7 +127,7 @@ class SmaCalculator:
         self.std_i = np.std(self.H_ik, axis=1)
         self.zmean_k = self.z_ik.sum(axis=0) / self.n_bam
         self.theta_i = (self.z_ik / self.zmean_k).sum(axis=1) / len(
-            C.POSITIONS[ref]["GENES"])
+            C.POSITIONS[ref_version]["GENES"])
         self.pi_ij = self.theta_i.reshape(
             (self.n_bam, 1)) * (self.D1_ij / self.r_ij)
 
@@ -158,12 +159,12 @@ class SmaCalculator:
                    footer=footer)
 
     @staticmethod
-    def compute(bam_file, i, D1_ij, D2_ij, H_ik, c_ix, dup_id, ref):
-        b = Bam(bam_file)
-        D1_ij[i] = b.get_cov_ranges(C.POSITIONS[ref]["SMN1_POS"])
-        D2_ij[i] = b.get_cov_ranges(C.POSITIONS[ref]["SMN2_POS"])
-        H_ik[i] = b.get_cov_ranges(C.POSITIONS[ref]["GENES"])
-        c_ix[i] = b.get_cov_ranges(C.POSITIONS[ref]["SMN"])
-        for d in range(len(C.POSITIONS[ref]["DUP_MARK"])):
+    def compute(bam_file, i, D1_ij, D2_ij, H_ik, c_ix, dup_id, ref_version, ref_file):
+        b = Bam(bam_file, ref_file)
+        D1_ij[i] = b.get_cov_ranges(C.POSITIONS[ref_version]["SMN1_POS"])
+        D2_ij[i] = b.get_cov_ranges(C.POSITIONS[ref_version]["SMN2_POS"])
+        H_ik[i] = b.get_cov_ranges(C.POSITIONS[ref_version]["GENES"])
+        c_ix[i] = b.get_cov_ranges(C.POSITIONS[ref_version]["SMN"])
+        for d in range(len(C.POSITIONS[ref_version]["DUP_MARK"])):
             dup_id[i][d] = b.get_consensus_sequence(
-                list(C.POSITIONS[ref]["DUP_MARK"].values())[d])
+                list(C.POSITIONS[ref_version]["DUP_MARK"].values())[d])

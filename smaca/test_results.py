@@ -65,7 +65,7 @@ class MyTestCase(unittest.TestCase):
             40.88517688227896)
 
     def test_sma_stats(self):
-        s = SmaCalculator(BAM_LIST, ref=C.REF_HG19)
+        s = SmaCalculator(BAM_LIST, ref_version=C.REF_HG19)
 
         np.testing.assert_array_almost_equal(
             s.pi_ij[0], [0.8027337510925755, 0.7296692915157783, 0.6580751624125392])
@@ -84,11 +84,11 @@ class MyTestCase(unittest.TestCase):
 
     def test_cli(self):
         parallel_out_fpath = DATA_PATH.joinpath("output_par.csv")
-        res = SmaCalculator(BAM_LIST, ref=C.REF_HG19, n_jobs=-1)
+        res = SmaCalculator(BAM_LIST, ref_version=C.REF_HG19, n_jobs=-1)
         res.write_stats(parallel_out_fpath)
 
         serial_out_fpath = DATA_PATH.joinpath("output_ser.csv")
-        res = SmaCalculator(BAM_LIST, ref=C.REF_HG19, n_jobs=1)
+        res = SmaCalculator(BAM_LIST, ref_version=C.REF_HG19, n_jobs=1)
         res.write_stats(serial_out_fpath)
 
         self.assertTrue(parallel_out_fpath.exists())

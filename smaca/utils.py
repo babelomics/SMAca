@@ -10,7 +10,7 @@ SMA carrier Test utilities module.
 """
 
 import numpy as np
-
+import pysam
 
 def get_total_depth(sam_file, chrom, start, end):
     """
@@ -49,3 +49,18 @@ def get_chr_prefix(sam_file):
 
             break
     return prefix
+
+
+def open_alignment_file(alignment_file, ref_file=None):
+    """
+    Read the alignment file
+    :param alignment_file: BAM or CRAM file
+    :param ref_file: FASTA reference file. Only used for CRAM files
+    :return: alignment file
+    """
+    if str(alignment_file).lower().endswith("cram"):
+        return pysam.AlignmentFile(
+            alignment_file, "rc", reference_filename=ref_file)
+    else:
+        return pysam.AlignmentFile(alignment_file, "rb")
+
