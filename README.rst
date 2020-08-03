@@ -34,6 +34,7 @@ This tool is developed with multithreading support to afford high performance an
 
 release history
 ---------------
+* v1.2.4 add CRAM support
 * v1.2.3 add bioconda recipe
 * v1.2.1 add HG38/GRCh38 support
 
@@ -45,7 +46,13 @@ You can run SMAca by typing at the terminal:
 
 ::
 
-  $ smaca --reference hg38 sample1.bam sample2.bam sample3.bam
+  $ smaca --reference_version hg38 sample1.bam sample2.bam sample3.bam
+
+or
+
+::
+
+  $ smaca --reference_version hg38 --reference_file /path/to/GRCh38.fa --ncpus 24 *.cram
 
 
 
@@ -155,6 +162,8 @@ citation
 Please, cite as:
 
 Daniel Lopez-Lopez, Carlos Loucera, Rosario Carmona, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data.
+
+
 
 TODO
 ----
