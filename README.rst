@@ -154,7 +154,7 @@ citation
 
 Please, cite as:
 
-Daniel Lopez-Lopez, Carlos Loucera, Rosario Carmona, Virginia Aquino, Josefa Salgado, Angel Alonso, Joaquín Dopazo (2020). SMAca: SMN1 copy-number and sequence variant analysis from next generation sequencing data.
+Lopez‐Lopez, D, Loucera, C, Carmona, R, et al. SMN1 copy‐number and sequence variant analysis from next‐generation sequencing data. Human Mutation. 2020; 1– 5. `10.1002/humu.24120 <https://doi.org/10.1002/humu.24120>`_
 
 TODO
 ----
