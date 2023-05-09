@@ -156,9 +156,3 @@ Please, cite as:
 
 Lopez‐Lopez, D, Loucera, C, Carmona, R, et al. SMN1 copy‐number and sequence variant analysis from next‐generation sequencing data. Human Mutation. 2020; 1– 5. `10.1002/humu.24120 <https://doi.org/10.1002/humu.24120>`_
 
-TODO
-----
-
-- [X] Create a conda package (bioconda)
-- [X] Add HG38/GRCh38 support
-- [  ] Refactor the code to follow the python good practice guidelines as much as possible
