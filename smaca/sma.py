@@ -75,28 +75,28 @@ class SmaCalculator:
 
             D1_ij_fname_memmap = Path(tmp_dir).joinpath("D1_ij_memmap")
             D1_ij_memmap = np.memmap(D1_ij_fname_memmap.as_posix(),
-                                     dtype=np.float,
+                                     dtype=float,
                                      shape=(n_bam,
                                             len(C.POSITIONS[ref]["SMN1_POS"])),
                                      mode='w+')
 
             D2_ij_fname_memmap = Path(tmp_dir).joinpath("D2_ij_memmap")
             D2_ij_memmap = np.memmap(D2_ij_fname_memmap,
-                                     dtype=np.float,
+                                     dtype=float,
                                      shape=(n_bam,
                                             len(C.POSITIONS[ref]["SMN2_POS"])),
                                      mode='w+')
 
             H_ik_fname_memmap = Path(tmp_dir).joinpath("H_ik_memmap")
             H_ik_memmap = np.memmap(H_ik_fname_memmap,
-                                    dtype=np.float,
+                                    dtype=float,
                                     shape=(n_bam,
                                            len(C.POSITIONS[ref]["GENES"])),
                                     mode='w+')
 
             c_ix_fname_memmap = Path(tmp_dir).joinpath("c_ix_memmap")
             c_ix_memmap = np.memmap(c_ix_fname_memmap,
-                                    dtype=np.float,
+                                    dtype=float,
                                     shape=(n_bam,
                                            len(C.POSITIONS[ref]["SMN"])),
                                     mode='w+')
