@@ -12,7 +12,6 @@ README = (HERE / "README.rst").read_text()
 setup(
     name='smaca',
     use_scm_version=True,
-    setup_requires=['setuptools-scm'],
     packages=find_packages(),
     url='https://github.com/babelomics/SMAca',
     license='GNU General Public License v.3.0',
