@@ -103,6 +103,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: gh repo sync ${FORK_USER}/bioconda-recipes --source bioconda/bioconda-recipes --branch master
 
+      - name: Checkout SMAca repo
+        uses: actions/checkout@v4
+        with:
+          path: smaca-repo
+
       - name: Checkout fork of bioconda-recipes
         uses: actions/checkout@v4
         with:
@@ -113,6 +118,7 @@ jobs:
       - name: Update recipe
         working-directory: bioconda-recipes
         run: |
+          cp ../smaca-repo/recipes/smaca/meta.yaml recipes/smaca/meta.yaml
           sed -i "s/^{% set version = .* %}/{% set version = \"${VERSION}\" %}/" recipes/smaca/meta.yaml
           sed -i "s/sha256: .*/sha256: ${SHA256}/" recipes/smaca/meta.yaml
           sed -i "s/^  number: .*/  number: 0/" recipes/smaca/meta.yaml
