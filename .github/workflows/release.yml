@@ -93,12 +93,10 @@ jobs:
             | jq -r '.urls[] | select(.packagetype=="sdist") | .digests.sha256')
           echo "SHA256=${SHA256}" >> $GITHUB_ENV
 
-      - name: Checkout bioconda-recipes
-        uses: actions/checkout@v4
-        with:
-          repository: bioconda/bioconda-recipes
-          token: ${{ secrets.GH_PAT }}
-          path: bioconda-recipes
+      - name: Fork and clone bioconda-recipes
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: gh repo fork bioconda/bioconda-recipes --clone --remote
 
       - name: Update recipe
         working-directory: bioconda-recipes
@@ -117,9 +115,10 @@ jobs:
           git add recipes/smaca/meta.yaml
           git commit -m "Update smaca to ${VERSION}"
           git push origin smaca-${VERSION}
+          FORK_USER=$(gh api user --jq .login)
           gh pr create \
             --repo bioconda/bioconda-recipes \
             --title "Update smaca to ${VERSION}" \
             --body "Automated version bump from https://github.com/babelomics/SMAca/releases/tag/v${VERSION}" \
-            --head smaca-${VERSION} \
+            --head "${FORK_USER}:smaca-${VERSION}" \
             --base master
