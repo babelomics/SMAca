@@ -120,15 +120,59 @@ class SmaCalculator:
             self.dup_id[:] = dup_id_memmap[:]
 
         self.r_ij = self.D1_ij + self.D2_ij
-        #TODO: consider using only "the bests" HK
-        self.z_ik = self.c_ix.sum(axis=1).reshape((self.n_bam, 1)) / self.H_ik
-        self.std_k = np.std(self.H_ik, axis=0)
-        self.std_i = np.std(self.H_ik, axis=1)
-        self.zmean_k = self.z_ik.sum(axis=0) / self.n_bam
-        self.theta_i = (self.z_ik / self.zmean_k).sum(axis=1) / len(
-            C.POSITIONS[ref]["GENES"])
-        self.pi_ij = self.theta_i.reshape(
-            (self.n_bam, 1)) * (self.D1_ij / self.r_ij)
+
+        # Detect samples with zero-coverage control genes and warn
+        gene_names = list(C.POSITIONS[ref]["GENES"].keys())
+        zero_cov_samples = np.any(self.H_ik == 0, axis=1)
+
+        for i in range(self.n_bam):
+            if zero_cov_samples[i]:
+                zero_genes = [gene_names[k] for k in range(len(gene_names))
+                              if self.H_ik[i, k] == 0]
+                click.echo(
+                    f"Warning: Sample '{self.bam_list[i]}' has zero coverage"
+                    f" in control gene(s): {', '.join(zero_genes)}. "
+                    f"Results for this sample will be set to NaN.",
+                    err=True
+                )
+
+        # Compute statistics with safe division
+        with np.errstate(divide='ignore', invalid='ignore'):
+            self.z_ik = np.where(
+                self.H_ik > 0,
+                self.c_ix.sum(axis=1).reshape((self.n_bam, 1)) / self.H_ik,
+                0.0
+            )
+            self.std_k = np.std(self.H_ik, axis=0)
+            self.std_i = np.std(self.H_ik, axis=1)
+            # Exclude zero-coverage samples from zmean_k so they don't
+            # corrupt statistics for healthy samples
+            valid_mask = ~zero_cov_samples
+            n_valid = valid_mask.sum()
+            if n_valid > 0:
+                self.zmean_k = (
+                    self.z_ik[valid_mask].sum(axis=0) / n_valid
+                )
+            else:
+                self.zmean_k = np.zeros(self.z_ik.shape[1])
+            self.theta_i = np.where(
+                self.zmean_k > 0,
+                self.z_ik / self.zmean_k,
+                0.0
+            ).sum(axis=1) / len(C.POSITIONS[ref]["GENES"])
+            self.pi_ij = np.where(
+                self.r_ij > 0,
+                self.theta_i.reshape((self.n_bam, 1))
+                * (self.D1_ij / np.where(self.r_ij > 0, self.r_ij, 1.0)),
+                np.nan
+            )
+
+        # Overwrite all computed stats to NaN for zero-coverage samples
+        for i in range(self.n_bam):
+            if zero_cov_samples[i]:
+                self.pi_ij[i, :] = np.nan
+                self.theta_i[i] = np.nan
+                self.z_ik[i, :] = np.nan
 
     def write_stats(self, output_file):
         """

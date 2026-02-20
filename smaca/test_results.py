@@ -67,13 +67,17 @@ class MyTestCase(unittest.TestCase):
     def test_sma_stats(self):
         s = SmaCalculator(BAM_LIST, ref=C.REF_HG19)
 
+        # Sample 0 (HG002) has full coverage; sample 1 (HG007) has zero
+        # coverage in 6 control genes and is excluded from zmean_k
         np.testing.assert_array_almost_equal(
-            s.pi_ij[0], [0.8027337510925755, 0.7296692915157783, 0.6580751624125392])
-        self.assertAlmostEqual(s.zmean_k[0], 0.6135924580475719)
+            s.pi_ij[0], [0.65682657, 0.59704251, 0.53846154])
+        self.assertAlmostEqual(s.zmean_k[0], 0.9887272198987905)
         np.testing.assert_array_almost_equal(
             s.std_i, [21.18266345, 5.07109509])
         self.assertAlmostEqual(s.std_k[0], 15.516854393351194)
         self.assertEqual(s.dup_id[0][0], b'T [[0], [0], [0], [106]]')
+        # Sample 1 should have NaN due to zero-coverage genes
+        self.assertTrue(np.all(np.isnan(s.pi_ij[1])))
 
     def test_get_chr_prefix(self):
         sam_file = pysam.AlignmentFile(BAM_hg19, "rb")
@@ -108,6 +112,20 @@ class MyTestCase(unittest.TestCase):
                 c_hg38,
                 decimal=0,
                 err_msg=";".join(C.POSITIONS[C.REF_HG19][ranges]))
+
+
+    def test_zero_coverage_gene_warning(self):
+        """Test that zero-coverage control genes produce warnings and NaN."""
+        s = SmaCalculator(BAM_LIST, ref=C.REF_HG19)
+
+        # Sample 0 (HG002) has full coverage — finite results
+        self.assertTrue(np.all(np.isfinite(s.pi_ij[0])))
+        self.assertTrue(np.isfinite(s.theta_i[0]))
+
+        # Sample 1 (HG007) has zero coverage in some control genes — NaN
+        self.assertTrue(np.all(np.isnan(s.pi_ij[1])))
+        self.assertTrue(np.isnan(s.theta_i[1]))
+        self.assertTrue(np.all(np.isnan(s.z_ik[1])))
 
 
 if __name__ == '__main__':
