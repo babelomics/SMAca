@@ -115,6 +115,7 @@ jobs:
         run: |
           sed -i "s/^{% set version = .* %}/{% set version = \"${VERSION}\" %}/" recipes/smaca/meta.yaml
           sed -i "s/sha256: .*/sha256: ${SHA256}/" recipes/smaca/meta.yaml
+          sed -i "s/^  number: .*/  number: 0/" recipes/smaca/meta.yaml
 
       - name: Create pull request
         working-directory: bioconda-recipes
